@@ -1,0 +1,38 @@
+# This is a basic workflow to help you get started with Actions
+
+name: GitHub To Tencent 
+
+# Controls when the workflow will run
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  push-to-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone
+        run: |
+          git init
+          git remote add origin https://github.com/${GITHUB_REPOSITORY}.git
+          git fetch --all
+          for branch in `git branch -a | grep remotes | grep -v HEAD`; do
+            git branch --track ${branch##*/} $branch
+          done
+        env:
+          GITHUB_REPOSITORY: TCATools/puppy-tools-config
+
+      - name: Push to Tencent
+        run: |
+          remote_repo="https://${TENCENT_USERNAME}:${TENCENT_PASSWORD}@git.code.tencent.com/${TENCENT_REPOSITORY}.git"
+          git remote add coding "${remote_repo}"
+          git show-ref # useful for debugging
+          git branch --verbose
+          # publish all
+          git push --all --force coding
+          git push --tags --force coding
+        env:
+          TENCENT_REPOSITORY: TCA/tca-tools/tca-tools-common/puppy_tools_config
+          TENCENT_USERNAME: ${{ secrets.TENCENT_USERNAME }}
+          TENCENT_PASSWORD: ${{ secrets.TENCENT_PASSWORD }}
