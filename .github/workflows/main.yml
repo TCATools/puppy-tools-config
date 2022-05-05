@@ -28,8 +28,8 @@ jobs:
           git show-ref # debug
           git branch --verbose
           # publish all
-          git push --all --force coding
-          git push --tags --force coding
+          git push --all coding
+          git push --tags coding
         env:
           TENCENT_REPOSITORY: TCA/tca-tools/tca-tools-common/puppy_tools_config
           TENCENT_USERNAME: ${{ secrets.TENCENT_USERNAME }}
