@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: GitHub To Tencent 
 
 # Controls when the workflow will run
@@ -27,7 +25,7 @@ jobs:
         run: |
           remote_repo="https://${TENCENT_USERNAME}:${TENCENT_PASSWORD}@git.code.tencent.com/${TENCENT_REPOSITORY}.git"
           git remote add coding "${remote_repo}"
-          git show-ref # useful for debugging
+          git show-ref # debug
           git branch --verbose
           # publish all
           git push --all --force coding
